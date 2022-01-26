@@ -1,67 +1,63 @@
-import store from "../../redux/index";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { getFilteredContacts } from '../../redux/contacts-selectors';
+import { addCont } from '../../redux/contacts-actions';
 
-import s from "../AddForm/AddForm.module.css";
+import s from '../AddForm/AddForm.module.css';
 
-function AddForm(props) {
+export default function AddForm() {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+  const contacts = useSelector(getFilteredContacts);
+  const dispatch = useDispatch();
+  const handleChange = ({ currentTarget: { name, value } }) =>
+    name === 'input-name' ? setName(value) : setNumber(value);
+  const submitContact = e => {
+    e.preventDefault();
+    const checkName = contacts.find(contact => name === contact.name);
+    if (checkName) alert(`${name} is already in contacts`);
+    dispatch(addCont({ name, number }));
+    resetState();
+  };
+  const resetState = () => {
+    setName('');
+    setNumber('');
+  };
   return (
     <section className={s.addForm}>
       <form className={s.form}>
-        <label className={s.label} htmlFor={"name"}>
+        <label className={s.label} htmlFor={'name'}>
           Name:
         </label>
         <input
-          id={"name"}
+          id={'name'}
           className={s.input}
           type="text"
-          name="INPUT_NAME"
-          value={props.name}
+          name="input-name"
+          value={name}
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
-          onChange={props.inputChenged}
+          onChange={handleChange}
         />
-        <label className={s.label} htmlFor={"tel"}>
+        <label className={s.label} htmlFor={'tel'}>
           Tel:
         </label>
         <input
-          id={"tel"}
+          id={'tel'}
           className={s.input}
           type="tel"
-          name="INPUT_NUMBER"
-          value={props.number}
+          name="input-number"
+          value={number}
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
-          onChange={props.inputChenged}
+          onChange={handleChange}
         />
-        <button
-          className={s.button}
-          type="submit"
-          onClick={(e) => {
-            e.preventDefault();
-            store.dispatch({ type: "ADD" });
-            store.dispatch({ type: "CLEAR_FORM" });
-          }}
-        >
+        <button className={s.button} type="submit" onClick={submitContact}>
           Add contact
         </button>
       </form>
     </section>
   );
 }
-const mapStateToProps = (state) => {
-  return {
-    name: state.contactReducer.name,
-    number: state.contactReducer.number,
-  };
-};
-const mapDispatchToProps = (dispatch) => {
-  return {
-    inputChenged: (e) => {
-      const action = { type: e.target.name, text: e.target.value };
-      dispatch(action);
-    },
-  };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(AddForm);

@@ -1,22 +1,16 @@
-//import { useSelector } from 'react-redux';
-//import { useFetchAPIQuery } from '../../redux/APIs/api';
-import store from '../../redux/index';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { getFilteredContacts } from '../../redux/contacts-selectors';
+import { delCont } from '../../redux/contacts-actions';
+import { useFetchAPIQuery, useDeleteContactMutation } from '../../redux/api';
 import s from '../ContactList/ContactList.module.css';
 
-export const ContactList = ({ data, onDelete }) => {
-  // const { data } = useFetchAPIQuery();
-  // console.log(store.getState());
-  console.log('data from contact list', data);
-  // const contacts = data.filter(({ name }) =>
-  //   name.toLowerCase().includes(data.filter.toLowerCase())
-  // );
-  // console.log(contacts);
-  // const items = useSelector(state =>
-  //   state.contactReducer.items.filter(({ name }) =>
-  //     name.toLowerCase().includes(state.contactReducer.filter.toLowerCase())
-  //   )
-  // );
+export const ContactList = () => {
+  const { data } = useFetchAPIQuery();
+  console.log('data from CL', data);
+  const dispatch = useDispatch();
+  const items = useSelector(getFilteredContacts);
+  //  const deleteContact = id => dispatch(delCont(id));
+
   return (
     <section className={s.contactList}>
       <ul className={s.list}>
@@ -27,13 +21,11 @@ export const ContactList = ({ data, onDelete }) => {
             <button
               className={s.button}
               type="button"
-              onClick={() => onDelete(item.id)}
-              // onClick={e => {
-              //   e.preventDefault();
-              //   store.dispatch({ type: 'DEL', payload: item.id });
-              // }}
+              // onClick={() => onDelete(item.id)}
+              //onClick={() => deleteContact(item.id)}
             >
               Delete
+              {/* {deleting ? 'Deleting...' : 'Delete'} */}
             </button>
           </li>
         ))}
