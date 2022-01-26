@@ -1,31 +1,21 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { useState } from 'react';
-import { getFilteredContacts } from '../../redux/contacts-selectors';
-import { addCont } from '../../redux/contacts-actions';
+import { useCreateContactMutation } from '../../redux/api';
 
 import s from '../AddForm/AddForm.module.css';
 
 export default function AddForm() {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-  const contacts = useSelector(getFilteredContacts);
-  const dispatch = useDispatch();
-  const handleChange = ({ currentTarget: { name, value } }) =>
-    name === 'input-name' ? setName(value) : setNumber(value);
+  const [createContact, { isLoading }] = useCreateContactMutation();
   const submitContact = e => {
     e.preventDefault();
-    const checkName = contacts.find(contact => name === contact.name);
-    if (checkName) alert(`${name} is already in contacts`);
-    dispatch(addCont({ name, number }));
-    resetState();
-  };
-  const resetState = () => {
-    setName('');
-    setNumber('');
+    const newContact = {
+      name: e.currentTarget.elements.name.value,
+      number: e.currentTarget.elements.number.value,
+    };
+    createContact(newContact);
+    e.currentTarget.reset();
   };
   return (
     <section className={s.addForm}>
-      <form className={s.form}>
+      <form className={s.form} autoComplete="off" onSubmit={submitContact}>
         <label className={s.label} htmlFor={'name'}>
           Name:
         </label>
@@ -33,12 +23,10 @@ export default function AddForm() {
           id={'name'}
           className={s.input}
           type="text"
-          name="input-name"
-          value={name}
+          name="name"
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
-          onChange={handleChange}
         />
         <label className={s.label} htmlFor={'tel'}>
           Tel:
@@ -47,15 +35,13 @@ export default function AddForm() {
           id={'tel'}
           className={s.input}
           type="tel"
-          name="input-number"
-          value={number}
+          name="number"
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
-          onChange={handleChange}
         />
-        <button className={s.button} type="submit" onClick={submitContact}>
-          Add contact
+        <button className={s.button} type="submit" disabled={isLoading}>
+          {isLoading ? `Adding...` : `Add contact`}
         </button>
       </form>
     </section>

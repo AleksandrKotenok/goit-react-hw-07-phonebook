@@ -7,5 +7,9 @@ const store = configureStore({
     contactReducer,
     [contacts.reducerPath]: contacts.reducer,
   },
+  middleware: getDefaultMiddleware => [
+    ...getDefaultMiddleware(),
+    contacts.middleware,
+  ],
 });
 export default store;

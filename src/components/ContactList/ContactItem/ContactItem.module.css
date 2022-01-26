@@ -1,0 +1,25 @@
+.item{
+   display: flex;
+   align-items: flex-start; 
+}
+.name{
+   margin: 0 10px 10px 0;
+   width: 120px;
+}
+.number{
+   margin: 0 10px 10px 0;
+   width: 150px;
+}
+.button{
+   border-radius: 5px;
+   border: solid 1px;
+   border-color: rgb(116, 116, 117);
+   width:auto;
+   cursor: pointer;
+   
+}
+.button:focus,.button:hover{
+   background-color: rgb(81, 81, 251);
+   box-shadow: 0px 0px 5px 5px rgba(255, 145, 0, 0.568);
+   transition: box-shadow 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
