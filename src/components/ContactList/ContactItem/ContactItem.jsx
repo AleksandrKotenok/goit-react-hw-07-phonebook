@@ -1,4 +1,4 @@
-import { useFetchAPIQuery, useDeleteContactMutation } from '../../../redux/api';
+import { useDeleteContactMutation } from '../../../redux/api';
 import s from '../ContactItem/ContactItem.module.css';
 
 export const ContactItem = ({ id, name, number }) => {
