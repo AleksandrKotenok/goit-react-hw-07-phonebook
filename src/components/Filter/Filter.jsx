@@ -5,9 +5,11 @@ import { filCont } from '../../redux/contacts-actions';
 import s from '../Filter/Filter.module.css';
 
 export default function Filter() {
-  const dispatch = useDispatch();
   const filterValue = useSelector(getFilter);
+  const dispatch = useDispatch();
+
   const onChange = ({ currentTarget: { value } }) => dispatch(filCont(value));
+
   return (
     <form className={s.form}>
       <label className={s.label} htmlFor={'filter'}>

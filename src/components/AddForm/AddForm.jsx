@@ -4,6 +4,7 @@ import s from '../AddForm/AddForm.module.css';
 
 export default function AddForm() {
   const [createContact, { isLoading }] = useCreateContactMutation();
+
   const submitContact = e => {
     e.preventDefault();
     const newContact = {
@@ -13,6 +14,7 @@ export default function AddForm() {
     createContact(newContact);
     e.currentTarget.reset();
   };
+
   return (
     <section className={s.addForm}>
       <form className={s.form} autoComplete="off" onSubmit={submitContact}>

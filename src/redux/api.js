@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
 export const contacts = createApi({
   reducerPath: 'contacts',
   baseQuery: fetchBaseQuery({
@@ -27,6 +28,7 @@ export const contacts = createApi({
     }),
   }),
 });
+
 export const {
   useFetchAPIQuery,
   useDeleteContactMutation,

@@ -10,7 +10,7 @@ export const initialStore = {
 // Reducer
 
 const filter = createReducer(initialStore.contacts.filter, {
-  [filCont]: (state, { payload }) => payload,
+  [filCont]: (_state, { payload }) => payload,
 });
 
 export default combineReducers({
